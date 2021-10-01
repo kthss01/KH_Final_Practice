@@ -12,7 +12,7 @@ import com.pratice.LottoNumberGenerator;
 
 
 class LottoNumberGeneratorTest {
-
+  
 	@DisplayName("로또 번호 갯수 테스트")
 	@Test
 	void lottoNumberSizeTest() {
