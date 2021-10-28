@@ -126,6 +126,31 @@ COMMENT ON COLUMN ATTENDANT.ATT_NO IS '참석자번호';
 COMMENT ON COLUMN ATTENDANT.SCH_NO IS '일정번호';
 COMMENT ON COLUMN ATTENDANT.EMP_NO IS '사원번호';
 
+--------------------------------------------------------------------------------
+-- 시퀀스 -----------------------------------------------------------------------
+-- CALENDAR
+-- CAL_REGISTRATION
+-- LIKE_CAL_REGISTRATION
+-- SCH_CAL_REGISTRATION
+-- SCHEDULE
+-- ATTENDANT
+-- SCH_CATEGORY
+CREATE SEQUENCE SEQ_CAL;
+CREATE SEQUENCE SEQ_CAL_REG;
+CREATE SEQUENCE SEQ_LIKE_CAL_REG;
+CREATE SEQUENCE SEQ_SCH_CAL_REG;
+CREATE SEQUENCE SEQ_SCH;
+CREATE SEQUENCE SEQ_ATT;
+CREATE SEQUENCE SEQ_SCH_CAT;
+
+DROP SEQUENCE SEQ_CAL;
+DROP SEQUENCE SEQ_CAL_REG;
+DROP SEQUENCE SEQ_LIKE_CAL_REG;
+DROP SEQUENCE SEQ_SCH_CAL_REG;
+DROP SEQUENCE SEQ_SCH;
+DROP SEQUENCE SEQ_ATT;
+DROP SEQUENCE SEQ_SCH_CAT;
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 -- 예약 ----------------------------------------------------------------------------------------------------------------------------------------------------
 DROP TABLE ASSET_LIST;
@@ -232,6 +257,31 @@ COMMENT ON COLUMN REZ_USAGE_INFO.REZ_INFO_NO IS '이용번호';
 COMMENT ON COLUMN REZ_USAGE_INFO.CONTENT IS '내용';
 COMMENT ON COLUMN REZ_USAGE_INFO.INFO_NO IS '이용정보번호';
 COMMENT ON COLUMN REZ_USAGE_INFO.REZ_NO IS '예약번호';
+
+--------------------------------------------------------------------------------
+-- 시퀀스 -----------------------------------------------------------------------
+-- RESERVATION
+-- ASSET
+-- ASSET_LIST
+-- REZ_USAGE_INFO
+-- AL_USAGE_INFO
+-- AL_INFORMATION
+-- INFO_ATTACHMENT
+CREATE SEQUENCE SEQ_REZ;
+CREATE SEQUENCE SEQ_AS;
+CREATE SEQUENCE SEQ_AL;
+CREATE SEQUENCE SEQ_REZ_INFO;
+CREATE SEQUENCE SEQ_AL_USG_INFO;
+CREATE SEQUENCE SEQ_AL_INFO;
+CREATE SEQUENCE SEQ_AL_INFO_ATT;
+
+DROP SEQUENCE SEQ_REZ;
+DROP SEQUENCE SEQ_AS;
+DROP SEQUENCE SEQ_AL;
+DROP SEQUENCE SEQ_REZ_INFO;
+DROP SEQUENCE SEQ_AL_USG_INFO;
+DROP SEQUENCE SEQ_AL_INFO;
+DROP SEQUENCE SEQ_AL_INFO_ATT;
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 -- DML ----------------------------------------------------------------------------------------------------------------------------------------------------
