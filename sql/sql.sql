@@ -27,37 +27,38 @@ INSERT INTO TEST VALUES(1);
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 -- DDL ----------------------------------------------------------------------------------------------------------------------------------------------------
 -- 일정 ---------------------------------------------------------------------------------------------------------------------------------------------------
-DROP TABLE SCH_CATEGORY;
-CREATE TABLE SCH_CATEGORY (
+DROP TABLE EVT_CATEGORY CASCADE CONSTRAINTS PURGE;
+CREATE TABLE EVT_CATEGORY (
     CAT_NO NUMBER CONSTRAINT CAT_PK PRIMARY KEY,
-    NAME VARCHAR(30) CONSTRAINT CAT_NAME_NN NOT NULL,
+    NAME VARCHAR(30) CONSTRAINT CAT_NAME_NN NOT NULL
 );
 
-COMMENT ON COLUMN SCH_CATEGORY.CAT_NO IS '분류번호';
-COMMENT ON COLUMN SCH_CATEGORY.NAME IS '분류명';
+COMMENT ON COLUMN EVT_CATEGORY.CAT_NO IS '분류번호';
+COMMENT ON COLUMN EVT_CATEGORY.NAME IS '분류명';
 
 --------------------------------------------------------------------------------
-DROP TABLE SCHEDULE;
-CREATE TABLE SCHEDULE (
-    SCH_NO NUMBER CONSTRAINT SCH_PK PRIMARY KEY,
-    NAME VARCHAR(30) CONSTRAINT SCH_NAME_NN NOT NULL,
-    START_DATE DATE CONSTRAINT SCH_START_DATE_NN NOT NULL,
-    END_DATE DATE CONSTRAINT SCH_END_DATE_NN NOT NULL,
+DROP TABLE EVENT CASCADE CONSTRAINTS PURGE;
+CREATE TABLE EVENT (
+    EVT_NO NUMBER CONSTRAINT EVT_PK PRIMARY KEY,
+    NAME VARCHAR(30) CONSTRAINT EVT_NAME_NN NOT NULL,
+    START_DATE DATE CONSTRAINT EVT_START_DATE_NN NOT NULL,
+    END_DATE DATE CONSTRAINT EVT_END_DATE_NN NOT NULL,
     LOCATION VARCHAR(50),
     CONTENT VARCHAR(200),
     CAT_NO NUMBER,
-    CONSTRAINT SCH_CAT_FK FOREIGN KEY(SCH_CAT) REFERENCES SCH_CATEGORY(CAT_NO)
+    CONSTRAINT EVT_CAT_FK FOREIGN KEY(CAT_NO) REFERENCES EVT_CATEGORY(CAT_NO)
 );
 
-COMMENT ON COLUMN SCHEDULE.SCH_NO IS '일정번호';
-COMMENT ON COLUMN SCHEDULE.NAME IS '일정명';
-COMMENT ON COLUMN SCHEDULE.START_DATE IS '시작일';
-COMMENT ON COLUMN SCHEDULE.END_DATE IS '종료일';
-COMMENT ON COLUMN SCHEDULE.LOCATION IS '장소';
-COMMENT ON COLUMN SCHEDULE.CONTENT IS '내용';
+COMMENT ON COLUMN EVENT.EVT_NO IS '이벤트번호';
+COMMENT ON COLUMN EVENT.NAME IS '이벤트명';
+COMMENT ON COLUMN EVENT.START_DATE IS '시작일';
+COMMENT ON COLUMN EVENT.END_DATE IS '종료일';
+COMMENT ON COLUMN EVENT.LOCATION IS '장소';
+COMMENT ON COLUMN EVENT.CONTENT IS '내용';
+COMMENT ON COLUMN EVENT.CAT_NO IS '분류번호';
 
 --------------------------------------------------------------------------------
-DROP TABLE CALENDAR;
+DROP TABLE CALENDAR CASCADE CONSTRAINTS PURGE;
 CREATE TABLE CALENDAR (
     CAL_NO NUMBER CONSTRAINT CAL_PK PRIMARY KEY,
     NAME VARCHAR(20) CONSTRAINT CAL_NAME_NN NOT NULL
@@ -67,21 +68,21 @@ COMMENT ON COLUMN CALENDAR.CAL_NO IS '캘린더번호';
 COMMENT ON COLUMN CALENDAR.NAME IS '캘린더명';
 
 --------------------------------------------------------------------------------
-DROP TABLE SCH_CAL_REGISTRATION;
-CREATE TABLE SCH_CAL_REGISTRATION (
-    REG_NO NUMBER CONSTRAINT SCH_CAL_PK PRIMARY KEY,
+DROP TABLE EVT_CAL_REGISTRATION CASCADE CONSTRAINTS PURGE;
+CREATE TABLE EVT_CAL_REGISTRATION (
+    REG_NO NUMBER CONSTRAINT EVT_CAL_PK PRIMARY KEY,
     CAL_NO NUMBER,
-    SCH_NO NUMBER,
-    CONSTRAINT SCH_CAL_CAL_FK FOREIGN KEY(CAL_NO) REFERENCES CALENDAR(CAL_NO),
-    CONSTRAINT SCH_CAL_SCH_FK FOREIGN KEY(SCH_NO) REFERENCES SCHEDULE(SCH_NO)
+    EVT_NO NUMBER,
+    CONSTRAINT EVT_CAL_CAL_FK FOREIGN KEY(CAL_NO) REFERENCES CALENDAR(CAL_NO),
+    CONSTRAINT EVT_CAL_EVT_FK FOREIGN KEY(EVT_NO) REFERENCES EVENT(EVT_NO)
 );
 
-COMMENT ON COLUMN SCH_CAL_REGISTRATION.REG_NO IS '등록번호';
-COMMENT ON COLUMN SCH_CAL_REGISTRATION.CAL_NO IS '캘린더번호';
-COMMENT ON COLUMN SCH_CAL_REGISTRATION.SCH_NO IS '일정번호';
+COMMENT ON COLUMN EVT_CAL_REGISTRATION.REG_NO IS '등록번호';
+COMMENT ON COLUMN EVT_CAL_REGISTRATION.CAL_NO IS '캘린더번호';
+COMMENT ON COLUMN EVT_CAL_REGISTRATION.EVT_NO IS '이벤트번호';
 
 --------------------------------------------------------------------------------
-DROP TABLE CAL_REGISTRATION;
+DROP TABLE CAL_REGISTRATION CASCADE CONSTRAINTS PURGE;
 CREATE TABLE CAL_REGISTRATION (
     REG_NO NUMBER CONSTRAINT CAL_REG_PK PRIMARY KEY,
     COLOR VARCHAR(10) DEFAULT 'GRAY' CONSTRAINT REG_COLOR_NN NOT NULL,
@@ -97,7 +98,7 @@ COMMENT ON COLUMN CAL_REGISTRATION.CAL_NO IS '캘린더번호';
 COMMENT ON COLUMN CAL_REGISTRATION.EMP_NO IS '사원번호';
 
 --------------------------------------------------------------------------------
-DROP TABLE LIKE_CAL_REGISTRATION;
+DROP TABLE LIKE_CAL_REGISTRATION CASCADE CONSTRAINTS PURGE;
 CREATE TABLE LIKE_CAL_REGISTRATION (
     REG_NO NUMBER CONSTRAINT LIKE_CAL_REG_PK PRIMARY KEY,
     COLOR VARCHAR(10) DEFAULT 'GRAY' CONSTRAINT LIKE_REG_COLOR_NN NOT NULL,
@@ -113,17 +114,17 @@ COMMENT ON COLUMN LIKE_CAL_REGISTRATION.CAL_REG_NO IS '캘린더번호';
 COMMENT ON COLUMN LIKE_CAL_REGISTRATION.EMP_NO IS '사원번호';
 
 --------------------------------------------------------------------------------
-DROP TABLE ATTENDANT;
+DROP TABLE ATTENDANT CASCADE CONSTRAINTS PURGE;
 CREATE TABLE ATTENDANT (
     ATT_NO NUMBER CONSTRAINT ATT_PK PRIMARY KEY,
-    SCH_NO NUMBER,
+    EVT_NO NUMBER,
     EMP_NO NUMBER,
-    CONSTRAINT ATT_SCH_FK FOREIGN KEY(SCH_NO) REFERENCES SCHEDULE(SCH_NO) ON DELETE CASCADE,
+    CONSTRAINT ATT_EVT_FK FOREIGN KEY(EVT_NO) REFERENCES EVENT(EVT_NO) ON DELETE CASCADE,
     CONSTRAINT ATT_EMP_FK FOREIGN KEY(EMP_NO) REFERENCES EMPLOYEE(EMP_NO) ON DELETE CASCADE   
 );
 
 COMMENT ON COLUMN ATTENDANT.ATT_NO IS '참석자번호';
-COMMENT ON COLUMN ATTENDANT.SCH_NO IS '일정번호';
+COMMENT ON COLUMN ATTENDANT.EVT_NO IS '이벤트번호';
 COMMENT ON COLUMN ATTENDANT.EMP_NO IS '사원번호';
 
 --------------------------------------------------------------------------------
@@ -131,25 +132,25 @@ COMMENT ON COLUMN ATTENDANT.EMP_NO IS '사원번호';
 -- CALENDAR
 -- CAL_REGISTRATION
 -- LIKE_CAL_REGISTRATION
--- SCH_CAL_REGISTRATION
--- SCHEDULE
+-- EVT_CAL_REGISTRATION
+-- EVENT
 -- ATTENDANT
--- SCH_CATEGORY
+-- EVT_CATEGORY
 CREATE SEQUENCE SEQ_CAL;
 CREATE SEQUENCE SEQ_CAL_REG;
 CREATE SEQUENCE SEQ_LIKE_CAL_REG;
-CREATE SEQUENCE SEQ_SCH_CAL_REG;
-CREATE SEQUENCE SEQ_SCH;
+CREATE SEQUENCE SEQ_EVT_CAL_REG;
+CREATE SEQUENCE SEQ_EVT;
 CREATE SEQUENCE SEQ_ATT;
-CREATE SEQUENCE SEQ_SCH_CAT;
+CREATE SEQUENCE SEQ_EVT_CAT;
 
 DROP SEQUENCE SEQ_CAL;
 DROP SEQUENCE SEQ_CAL_REG;
 DROP SEQUENCE SEQ_LIKE_CAL_REG;
-DROP SEQUENCE SEQ_SCH_CAL_REG;
-DROP SEQUENCE SEQ_SCH;
+DROP SEQUENCE SEQ_EVT_CAL_REG;
+DROP SEQUENCE SEQ_EVT;
 DROP SEQUENCE SEQ_ATT;
-DROP SEQUENCE SEQ_SCH_CAT;
+DROP SEQUENCE SEQ_EVT_CAT;
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 -- 예약 ----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -286,7 +287,47 @@ DROP SEQUENCE SEQ_AL_INFO_ATT;
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 -- DML ----------------------------------------------------------------------------------------------------------------------------------------------------
 -- 일정 ----------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+-- READ ------------------------------------------------------------------------
+-- CALENDAR 
+-- 해당 사원에 등록된 내 캘린더 리스트 (캘린더명, 캘린더 색깔 같이)
 
+-- 해당 사원에 등록된 다른 등록된 캘린더 리스트 (해당 캘린더명, 관심 캘린더의 색깔) - 색깔 할 때 헷갈리지 않게 조심
+
+-- EVENT
+-- 해당 캘린더에 등록된 이벤트를 참석자와 함께 이벤트 분류명과 같이 출력
+
+
+-- EVENT_CATEGORY
+-- 이벤트 분류 : 개인, 부서, 전사
+SELECT * FROM EVT_CATEGORY;
+
+-- CREATE ----------------------------------------------------------------------
+-- CALENDAR 
+
+-- EVENT
+
+-- EVENT_CATEGORY
+INSERT INTO EVT_CATEGORY VALUES(SEQ_EVT_CAT.NEXTVAL, '개인');
+INSERT INTO EVT_CATEGORY VALUES(SEQ_EVT_CAT.NEXTVAL, '부서');
+INSERT INTO EVT_CATEGORY VALUES(SEQ_EVT_CAT.NEXTVAL, '전사');
+COMMIT;
+
+-- UPDATE ----------------------------------------------------------------------
+-- CALENDAR 
+
+-- EVENT
+
+-- EVENT_CATEGORY
+
+-- DELETE ----------------------------------------------------------------------
+-- CALENDAR 
+
+-- EVENT
+
+-- EVENT_CATEGORY
+
+--------------------------------------------------------------------------------
 -- 예약 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
