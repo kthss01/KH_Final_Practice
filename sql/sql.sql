@@ -397,8 +397,20 @@ COMMIT;
 
 -- UPDATE ----------------------------------------------------------------------
 -- CALENDAR 
+UPDATE CALENDAR SET NAME = '테스트켈린더3' WHERE CAL_NO = 2;
+
+---- CAL_REGISTRATION
+UPDATE CAL_REGISTRATION SET COLOR = 'BLUE' WHERE CAL_NO = 1;
 
 -- EVENT
+UPDATE EVENT SET 
+NAME = '수정이벤트',
+START_DATE = SYSDATE,
+END_DATE = SYSDATE + 1,
+LOCATION = '수정장소',
+CONTENT = '수정내용',
+CAT_NO = 2
+WHERE EVT_NO = 10 AND ISDELETE = 'N';
 
 -- EVENT_CATEGORY
 
