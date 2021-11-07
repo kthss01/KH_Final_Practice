@@ -35,7 +35,12 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log('Event: ' + info.event.title);
       console.log('Color: ' + info.event.backgroundColor);
 
+      console.log(info.event.start);
+
       info.event.title = 'test'; // 이런식으로 변경 후 DB 변경
+      info.event.setProp("title", "test");
+      info.event.setProp("backgroundColor", "blue");
+      info.event.setEnd(new Date('2021-11-12 00:00'));
     },
   });
 
