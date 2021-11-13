@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
       //   console.log('background click');
       // }
       return event.rendering === 'background';
-    },
+    }, 
     resourceGroupLabelDidMount: function(arg) {
       // console.log(arg);
       // arg.el.id = 'a';
